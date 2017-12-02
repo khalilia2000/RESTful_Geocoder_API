@@ -24,7 +24,7 @@ optional arguments:
   --host HOST  Host Server IP address.
   --port PORT  Port to use.
 ```
-if `--host`, `--port` parameters are not specified, '0.0.0.0' (i.e. localhost) and 5000 are used by default. 
+if `--host`, `--port` parameters are not specified, 'http://0.0.0.0' (i.e. localhost) and 5000 are used by default. 
 
 ### Use The Flask Implementation:
 Use the following syntax to run the `geocoder_flask.py` in a terminal:
@@ -36,7 +36,7 @@ optional arguments:
   --host HOST  Host Server IP address.
   --port PORT  Port to use.
 ```
-if `--host`, `--port` parameters are not specified, '0.0.0.0' (i.e. localhost) and 5000 are used by default. 
+if `--host`, `--port` parameters are not specified, 'http://0.0.0.0' (i.e. localhost) and 5000 are used by default. 
 
 ### Dependencies
 `geocoder_base.py` uses the following standard Python 3.x libraries to implement the API:
@@ -53,11 +53,11 @@ if `--host`, `--port` parameters are not specified, '0.0.0.0' (i.e. localhost) a
 
 ## Usage and Querying
 The Services API can be queried by using a GET method and specifying the `address` field, using the following URL syntax:  
-`HOST:PORT/geocode?address=ADDRESS`
-where, 
-`HOST`: is the Host Server IP address that is specified during the initiation of the Services API. By default, both implementations map to localhost (http://0.0.0.0) if HOST parameter is not specified during the initiation of the Services API.
-`PORT`: is the Port that is specified during the initiation of the Services API. By default, both implementations use Port 5000 if PORT parameter is not specified during the initiation of the Server API.  
-`ADDRESS`: is the address that will be geocoded.
+`HOST:PORT/geocode?address=ADDRESS`. 
+where,   
+  * `HOST`: is the Host Server IP address that is specified during the initiation of the Services API. By default, both implementations map to localhost (http://0.0.0.0) if HOST parameter is not specified during the initiation of the Services API.  
+  * `PORT`: is the Port that is specified during the initiation of the Services API. By default, both implementations use Port 5000 if PORT parameter is not specified during the initiation of the Server API.    
+  * `ADDRESS`: is the address that will be geocoded.  
 
 The API returns a JSON object similar to below with `lat`, `long`, `status`, and `service_provider` fields.
 ```
