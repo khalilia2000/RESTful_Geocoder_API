@@ -67,6 +67,14 @@ The API returns a JSON object similar to below with `lat`, `long`, `status`, and
   "service_provider": "google", 
   "status": "OK"
 }
+```  
+The field status will have one of the following values: `OK`, `not successful`, `address is missing`, or `api syntax error`. The fields `lat`, `lng`, and `service_provider` will only be provided if `status` is `OK`. if `status` is `api syntax error`, a `syntax` and a `description` field will be sent back as per below:  
+```
+{
+  "description": "Use the correct syntax in which,  HOST is the host server ip address -  PORT is the port to use -  ADDRESS is the address to be geocoded.", 
+  "status": "api syntax error", 
+  "syntax": "HOST:PORT/geocode?address=ADDRESS"
+}
 ```
 
 ## License
