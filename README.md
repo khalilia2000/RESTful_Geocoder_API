@@ -1,7 +1,7 @@
 # RESTful Geocoding Proxy Server API
 
 ## Description
-RESTful implementations of a Server API are provided here in Python. For a given address, the Server API uses JSON serializatoin to return the lat, long, status, and the service provider that was utilized. The Server API uses [Google Maps API](https://developers.google.com/maps/documentation/geocoding/start) as the primary service. If the the call is not successful, it then uses [Mapquest API](https://developer.mapquest.com/documentation/geocoding-api/address/get/) as a secondary fallback.  
+RESTful implementations of a Server API in Python are provided herein. For a given address, the Server API uses JSON serialization to return the lat, long, status, and the service provider that was utilized. The Server API uses [Google Maps API](https://developers.google.com/maps/documentation/geocoding/start) as the primary service. If the call is not successful, it then uses [Mapquest API](https://developer.mapquest.com/documentation/geocoding-api/address/get/) as a secondary fallback.  
   
 Two implementations are provided herein for the aforementioned tasks:  
   * `geocoder_flask.py`:  This version uses the Flask framework.
@@ -21,10 +21,10 @@ usage: python geocoder_base.py [-h] [--host HOST] [--port PORT]
 
 optional arguments:
   -h, --help   show this help message and exit
-  --host HOST  Host server ip address.
+  --host HOST  Host server IP address.
   --port PORT  Port to use.
 ```
-if `--host`, `--port` paramters are not specified, '0.0.0.0' (i.e. localhost) and 5000 are used by default. 
+if `--host`, `--port` parameters are not specified, '0.0.0.0' (i.e. localhost) and 5000 are used by default. 
 
 ### Use The Flask Implementation:
 Use the following syntax to run the `geocoder_flask.py` in a terminal:
@@ -33,10 +33,10 @@ usage: python geocoder_flask.py [-h] [--host HOST] [--port PORT]
 
 optional arguments:
   -h, --help   show this help message and exit
-  --host HOST  Host server ip address.
+  --host HOST  Host server IP address.
   --port PORT  Port to use.
 ```
-if `--host`, `--port` paramters are not specified, '0.0.0.0' (i.e. localhost) and 5000 are used by default. 
+if `--host`, `--port` parameters are not specified, '0.0.0.0' (i.e. localhost) and 5000 are used by default. 
 
 ### Dependencies
 `geocoder_base.py` uses the following standard Python 3.x libraries to implement the API:
@@ -52,14 +52,14 @@ if `--host`, `--port` paramters are not specified, '0.0.0.0' (i.e. localhost) an
   * flask
 
 ## Usage and Querying
-The Server API can be querried by using a GET method and specifying the `address` field, using the following URL syntax:  
+The Server API can be queried by using a GET method and specifying the `address` field, using the following URL syntax:  
 `HOST:PORT/geocode?address=ADDRESS`
 where, 
-`HOST`: is the Host Server IP address that is specified during initiating the Server API. By default both implementations map to localhost (http://0.0.0.0) if HOST parameter is not specified during the initiation of the Server API.
-`PORT`: is the Port that is specified during initiating the Server API. By default both implementations use Port 5000 if PORT parameter is not specified during the initiation of the Server API.  
+`HOST`: is the Host Server IP address that is specified during initiating the Server API. By default, both implementations map to localhost (http://0.0.0.0) if HOST parameter is not specified during the initiation of the Server API.
+`PORT`: is the Port that is specified during initiating the Server API. By default, both implementations use Port 5000 if PORT parameter is not specified during the initiation of the Server API.  
 `ADDRESS`: is the address that will be geocoded.
 
-The API returns a JSON object similat to below with `lat`, `long`, `status`, and `service_provider` fields.
+The API returns a JSON object similar to below with `lat`, `long`, `status`, and `service_provider` fields.
 ```
 {
   "lat": 49.2827291, 
