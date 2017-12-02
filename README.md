@@ -53,7 +53,7 @@ if `--host`, `--port` parameters are not specified, 'http://0.0.0.0' (i.e. local
 
 ## Usage and Querying
 The Services API can be queried by using a GET method and specifying the `address` field, using the following URL syntax:  
-`HOST:PORT/geocode?address=ADDRESS`. 
+`HOST:PORT/geocode?address=ADDRESS`.  
 where,   
   * `HOST`: is the Host Server IP address that is specified during the initiation of the Services API. By default, both implementations map to localhost (http://0.0.0.0) if HOST parameter is not specified during the initiation of the Services API.  
   * `PORT`: is the Port that is specified during the initiation of the Services API. By default, both implementations use Port 5000 if PORT parameter is not specified during the initiation of the Server API.    
