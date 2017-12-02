@@ -1,17 +1,17 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """
-Created on Friday Dec 1, 2017 19:53:37 2017
+Created on Fri Dec  1 17:15:17 2017
 
-@author: ali khalili
+@author: ali
 """
 
 # import starndard libraries
-import json
-import urllib
 import argparse
-
-# Use flask framework
-from flask import Flask, request, jsonify
-app = Flask(__name__)
+from http.server import HTTPServer
+from http.server import BaseHTTPRequestHandler
+import json
+import urllib.request
 
 # NOTE: not a good practice to have exposed in a public git domain, but OK for this api
 # google maps api credentials
@@ -40,13 +40,13 @@ def geocode_by_google(input_location):
     try: 
         # send a GET request and process the response into a json dictionary
         response = urllib.request.urlopen(url)
-        result = json.loads(response.read())
+        result = json.loads(response.read().decode('utf-8'))
     except Exception:
-        print('Exception raised in geocode_by_google()')
         return False
     
     if result['status'] != 'OK':
         # not successful response
+        print('Exception raised in geocode_by_google()')
         return False
     else:
         # successful response
@@ -74,7 +74,7 @@ def geocode_by_mapquest(input_location):
     try:
         # send a GET request and process the response into a json dictionary
         response = urllib.request.urlopen(url)
-        result = json.loads(response.read())
+        result = json.loads(response.read().decode('utf-8'))
     except Exception:
         print('Exception raised in geocode_by_mapquest().')
         return False
@@ -87,7 +87,6 @@ def geocode_by_mapquest(input_location):
         lat_long_dict = result['results'][0]['locations'][0]['latLng']
         return lat_long_dict
   
-
 
 def get_lat_long(input_location):
     '''
@@ -113,9 +112,8 @@ def get_lat_long(input_location):
         if result_m:
             result_m['service_provider'] = 'mapquest'
         return result_m
-        
 
-@app.route('/')
+
 def provide_help():
     '''
     send an api syntax error status and show the correct usage of the api.
@@ -129,47 +127,48 @@ def provide_help():
     description_str += ' ADDRESS is the address to be geocoded.'
     # result dictionary
     result =  {'syntax': syntax_str, 'status': 'api syntax error', 'description': description_str}
-    # encode in utf-8 before returning
-    return jsonify(result)
+    # return result
+    return result
 
 
-@app.route('/geocode')
-def geocode_address():
-    '''
-    handle the GET request at /geocode.
-    isolate the "address" field in the GET parameters and pass on to get_lat_long function.
-    add a status code to the result and retun a json object
+class RestHTTPRequestHandler(BaseHTTPRequestHandler):
     
-    Return:
-        A jasonified dictionary with the following keys:
-            status: "OK", "not successful", or "address is missing"
-            service_provider: the 3rd party service provider that was used.
-            lat: latitude of the address
-            lng: longitude of the address
-    '''
-    
-    # parse the GET arguments and isolate the address
-    args = request.args
-    if 'address' in args:
-        # address argument is passed on
-        result = get_lat_long(args['address'])
-        if result:
-            # success
-            result['status'] = 'OK'
+    # GET
+    def do_GET(self):
+        # send back the header with status code 200
+        self.send_response(200)
+        # Send headers
+        self.send_header('Content-type','json')
+        self.end_headers()
+        
+        if self.path[:9] != '/geocode?':
+            # wrong syntax - provide help
+            self.wfile.write(json.dumps(provide_help()).encode('utf-8'))
         else:
-            # no success
-            result = {'status': 'not successful'}
-        return jsonify(result)
-    else:
-        # no address argument is passed on
-        result = {'status': 'address is missing'}
-        return jsonify(result)
-
+            # parse the GET arguments and isolate the address
+            args = urllib.parse.parse_qs(self.path[9:])
+            if 'address' in args:
+                # address argument is passed on
+                result = get_lat_long(str(args['address'][0]))
+                if result:
+                    # success
+                    result['status'] = 'OK'
+                else:
+                    # no success
+                    result = {'status': 'not successful'}
+                self.wfile.write(json.dumps(result).encode('utf-8'))
+            else:
+                # no address argument is passed on
+                result = {'status': 'address is missing'}
+                self.wfile.write(json.dumps(result).encode('utf-8'))
+            
+        return
+        
 
 def run_server(host, port):
-    # initate and run the server
-    app.debug = True
-    app.run(host=host, port=port)
+    httpd = HTTPServer((host, port), RestHTTPRequestHandler)
+    print('Running server at host = {} and port = {}'.format(host, port))
+    httpd.serve_forever()
 
 
 if __name__ == '__main__':
